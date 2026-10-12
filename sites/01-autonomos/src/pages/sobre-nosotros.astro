@@ -1,8 +1,8 @@
 ---
-import Legal from '@paginasweb/theme/layouts/Legal.astro';
+import Page from '@paginasweb/theme/layouts/Page.astro';
 import { SITE } from '../site.config';
 ---
-<Legal title="Sobre nosotros" description={`Quién está detrás de ${SITE.name}, cómo elaboramos las calculadoras y de dónde salen los datos.`}>
+<Page icon="shield" ads={false} title="Sobre nosotros" description={`Quién está detrás de ${SITE.name}, cómo elaboramos las calculadoras y de dónde salen los datos.`}>
   <p>
     {SITE.name} es un proyecto de {SITE.owner.name} para que cualquier autónomo en España pueda
     resolver en un minuto las cuentas que más dudas generan: cuánto pagará de cuota, cuánto IVA debe
@@ -24,4 +24,4 @@ import { SITE } from '../site.config';
     El sitio es gratuito y se financia con publicidad de Google AdSense. Los anuncios no influyen en el
     contenido ni en los resultados de las calculadoras.
   </p>
-</Legal>
+</Page>

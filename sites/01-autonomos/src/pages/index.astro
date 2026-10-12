@@ -1,0 +1,139 @@
+---
+import Base from '@paginasweb/theme/layouts/Base.astro';
+import Icon from '@paginasweb/theme/components/Icon.astro';
+import { cuotaAutonomos, RETA_TRAMOS } from '@paginasweb/calc-core';
+import { SITE } from '../site.config';
+import { CALCULADORAS, GUIAS } from '../data/content';
+
+const money = (n: number) => n.toLocaleString('es-ES', { maximumFractionDigits: 0 }) + ' €';
+const ejemplo = { ingresos: 30000, gastos: 6000 };
+const r = cuotaAutonomos(ejemplo);
+const plazos = [
+  { t: '1.er trimestre', f: '1 – 20 abril' },
+  { t: '2.º trimestre', f: '1 – 20 julio' },
+  { t: '3.er trimestre', f: '1 – 20 octubre' },
+  { t: '4.º trimestre', f: '1 – 30 enero' },
+];
+---
+<Base
+  title={SITE.name}
+  description="Calculadoras gratuitas y guías claras para autónomos en España: cuota del RETA, IVA, retenciones, modelo 130 y calendario fiscal."
+  jsonLd={[{ '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: SITE.url, inLanguage: 'es' }]}
+>
+  <section class="hero">
+    <div class="container">
+      <div>
+        <span class="tag">Gratis · Sin registro</span>
+        <h1>Las cuentas del autónomo, <em>claras</em> y en un minuto</h1>
+        <p class="lead">
+          Calcula tu cuota, tus facturas y tus impuestos con los datos oficiales, y entiende cuánto
+          pagar, cuándo y por qué.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/calculadoras/cuota-autonomos/">Calcular mi cuota <Icon name="arrow" size={18} /></a>
+          <a class="btn btn-ghost" href="/calculadoras/">Ver todas las calculadoras</a>
+        </div>
+        <ul class="trust">
+          <li><Icon name="shield" size={18} />Datos del BOE, la AEAT y la Seguridad Social</li>
+          <li><Icon name="lock" size={18} />Tus datos no salen de tu navegador</li>
+        </ul>
+      </div>
+      <a class="preview" href="/calculadoras/cuota-autonomos/" aria-label="Ejemplo de la calculadora de cuota de autónomos">
+        <div class="preview-head"><span class="icon-badge"><Icon name="wallet" size={20} /></span>Cuota de autónomos</div>
+        <div class="preview-row"><span>Ingresos anuales</span><b>{money(ejemplo.ingresos)}</b></div>
+        <div class="preview-row"><span>Gastos deducibles</span><b>{money(ejemplo.gastos)}</b></div>
+        <div class="preview-row"><span>Rendimiento mensual</span><b>{money(r.rendimientoMensual)}</b></div>
+        <div class="preview-total">
+          <small>Tu cuota estimada · tramo {r.tramo} de {RETA_TRAMOS.length}</small>
+          <strong>{money(r.cuota)}/mes</strong>
+          <div class="meter" aria-hidden="true">
+            {RETA_TRAMOS.map((_, i) => <i class:list={{ on: i < r.tramo }} />)}
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <div class="container">
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Calculadoras</h2>
+          <p>Resultados al instante mientras escribes.</p>
+        </div>
+        <a href="/calculadoras/">Ver todas <Icon name="arrow" size={16} /></a>
+      </div>
+      <ul class="cards">
+        {CALCULADORAS.map((c) => (
+          <li>
+            <a class="card" href={c.href}>
+              <span class="icon-badge"><Icon name={c.icon} /></span>
+              <strong>{c.label}</strong>
+              <span>{c.desc}</span>
+              <b class="go">Calcular <Icon name="arrow" size={16} /></b>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Plazos de los impuestos trimestrales</h2>
+          <p>IVA (modelo 303) y pago fraccionado del IRPF (modelo 130).</p>
+        </div>
+        <a href="/guias/calendario-fiscal-autonomos/">Calendario completo <Icon name="arrow" size={16} /></a>
+      </div>
+      <ul class="deadlines">
+        {plazos.map((p) => (
+          <li><b>{p.f}</b><span>{p.t}</span><br /><small>303 · 130</small></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Guías</h2>
+          <p>Lo que necesitas saber, en lenguaje llano y con enlaces a la norma.</p>
+        </div>
+        <a href="/guias/">Ver todas <Icon name="arrow" size={16} /></a>
+      </div>
+      <ul class="cards">
+        {GUIAS.map((g) => (
+          <li>
+            <a class="card" href={g.href}>
+              <span class="icon-badge"><Icon name={g.icon} /></span>
+              <strong>{g.label}</strong>
+              <span>{g.desc}</span>
+              <b class="go">Leer la guía <Icon name="arrow" size={16} /></b>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Por qué fiarte de estas cifras</h2>
+      <ul class="features">
+        <li>
+          <span class="icon-badge"><Icon name="shield" /></span>
+          <b>Fuentes oficiales</b>
+          <p>Cada calculadora enlaza la norma o la página oficial de la que salen sus datos.</p>
+        </li>
+        <li>
+          <span class="icon-badge"><Icon name="clock" /></span>
+          <b>Revisión periódica</b>
+          <p>Cada página muestra su fecha de revisión. Actualizamos los importes cada enero y con cada cambio normativo.</p>
+        </li>
+        <li>
+          <span class="icon-badge"><Icon name="lock" /></span>
+          <b>Privado por diseño</b>
+          <p>Los cálculos se hacen en tu navegador: no guardamos ni enviamos lo que escribes.</p>
+        </li>
+      </ul>
+      <p>Más sobre cómo trabajamos en <a href="/sobre-nosotros/">Sobre nosotros</a>.</p>
+    </section>
+  </div>
+</Base>

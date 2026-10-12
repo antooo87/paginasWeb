@@ -1,18 +1,15 @@
 ---
+import Icon from './Icon.astro';
 interface Props { date: string; sources?: { href: string; label: string }[] }
 const { date, sources = [] } = Astro.props;
 const human = new Date(date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<p class="meta">
-  Última revisión: <time datetime={date}>{human}</time>
+<div class="meta">
+  <span><Icon name="clock" size={16} /><span>Revisado el <time datetime={date}>{human}</time></span></span>
   {sources.length > 0 && (
-    <>
-      {' · '}Fuentes:{' '}
-      {sources.map((s, i) => (
-        <>
-          <a href={s.href} rel="noopener" target="_blank">{s.label}</a>{i < sources.length - 1 ? ', ' : ''}
-        </>
-      ))}
-    </>
+    <span>
+      <Icon name="shield" size={16} />
+      <span>Fuentes: {sources.map((s, i) => (<><a href={s.href} rel="noopener" target="_blank">{s.label}</a>{i < sources.length - 1 && ', '}</>))}</span>
+    </span>
   )}
-</p>
+</div>

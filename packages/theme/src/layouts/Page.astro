@@ -1,0 +1,27 @@
+---
+// Página genérica: cabecera de página y contenido en una columna.
+import Base from './Base.astro';
+import PageHead from '../components/PageHead.astro';
+import type { IconName } from '../site.ts';
+interface Props {
+  title: string;
+  description: string;
+  lead?: string;
+  tag?: string;
+  icon?: IconName;
+  breadcrumbs?: { href: string; label: string }[];
+  wide?: boolean;
+  noindex?: boolean;
+  ads?: boolean;
+}
+const { title, description, lead, tag, icon, breadcrumbs, wide = false, noindex, ads } = Astro.props;
+const crumbs = breadcrumbs ?? [{ href: Astro.url.pathname, label: title }];
+---
+<Base title={title} description={description} breadcrumbs={crumbs} noindex={noindex} ads={ads}>
+  <PageHead title={title} lead={lead} tag={tag} icon={icon} breadcrumbs={crumbs} />
+  <div class:list={['container', { narrow: !wide }]}>
+    <div class:list={['section', { prose: !wide }]} style="padding-top: 32px">
+      <slot />
+    </div>
+  </div>
+</Base>

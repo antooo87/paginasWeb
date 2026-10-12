@@ -18,7 +18,7 @@ import { IVA_TIPOS, RETENCION_GENERAL, RETENCION_INICIO } from '@paginasweb/calc
   <form class="calc" slot="tool" id="calc-factura" novalidate>
     <fieldset>
       <label>Importe (€)
-        <input type="number" name="importe" inputmode="decimal" min="0" step="0.01" value="1000" />
+        <span class="field" data-unit="€"><input type="number" name="importe" inputmode="decimal" min="0" step="0.01" value="1000" /></span>
       </label>
       <label>El importe es…
         <select name="modo">

@@ -1,0 +1,21 @@
+---
+import { SITE } from '@site-config';
+import Icon from './Icon.astro';
+import AdSlot from './AdSlot.astro';
+const path = Astro.url.pathname;
+const tools = SITE.tools.filter((t) => t.href !== path);
+---
+<aside class="aside" aria-label="Más herramientas">
+  <div class="aside-sticky">
+    <div class="aside-box">
+      <h2>Herramientas</h2>
+      <ul class="aside-links">
+        {tools.map((t) => (
+          <li><a href={t.href}><Icon name={t.icon} size={20} />{t.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <slot />
+    <AdSlot slot={SITE.adSlots.sidebar} />
+  </div>
+</aside>

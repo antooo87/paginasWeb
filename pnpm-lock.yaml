@@ -16,7 +16,7 @@ importers:
         specifier: '*'
         version: 7.3.8(@types/node@24.19.2)(yaml@2.9.1)
 
-  sites/autonomos:
+  sites/01-autonomos:
     dependencies:
       '@astrojs/sitemap':
         specifier: ^3.7.4

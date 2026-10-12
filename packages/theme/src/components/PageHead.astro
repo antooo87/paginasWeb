@@ -1,0 +1,27 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import Icon from './Icon.astro';
+import type { IconName } from '../site.ts';
+interface Props {
+  title: string;
+  lead?: string;
+  tag?: string;
+  icon?: IconName;
+  breadcrumbs?: { href: string; label: string }[];
+}
+const { title, lead, tag, icon, breadcrumbs } = Astro.props;
+---
+<header class="page-head">
+  <div class="container">
+    {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+    <div class="page-head-title">
+      {icon && <span class="icon-badge"><Icon name={icon} size={28} /></span>}
+      <div>
+        {tag && <span class="tag">{tag}</span>}
+        <h1>{title}</h1>
+        {lead && <p class="lead">{lead}</p>}
+        <slot />
+      </div>
+    </div>
+  </div>
+</header>

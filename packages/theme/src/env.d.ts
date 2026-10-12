@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_ADS_ENABLED?: string;
   readonly PUBLIC_AD_SLOT_CALC?: string;
   readonly PUBLIC_AD_SLOT_ARTICLE?: string;
+  readonly PUBLIC_AD_SLOT_SIDEBAR?: string;
   readonly PUBLIC_OWNER_NAME?: string;
   readonly PUBLIC_OWNER_NIF?: string;
   readonly PUBLIC_OWNER_ADDRESS?: string;

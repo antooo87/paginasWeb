@@ -5,20 +5,26 @@ Monorepo de sitios de nicho monetizados con Google AdSense. Sitios estáticos co
 
 ```
 paginasWeb/
-├─ packages/
-│  ├─ theme/        # layouts, cabecera, pie, AdSlot, páginas legales, ads.txt/robots.txt
-│  └─ calc-core/    # funciones de cálculo puras, con tests (node --test)
-├─ sites/
-│  └─ autonomos/    # sitio 1: calculadoras y guías para autónomos (Astro)
-├─ .githooks/pre-commit        # bloquea .env, claves y secretos antes del commit
-├─ .github/workflows/ci.yml    # gitleaks + tests + build en cada PR
-├─ .gitleaks.toml
-└─ pnpm-workspace.yaml
+├─ sites/                      ← UNA CARPETA POR WEB (cada una se publica por separado)
+│  ├─ 01-autonomos/            web 1: «Autónomo Claro», calculadoras y guías para autónomos
+│  ├─ 02-reformas/             web 2: reformas (pendiente)
+│  └─ 03-solar/                web 3: energía solar (pendiente)
+├─ packages/                   ← CÓDIGO COMPARTIDO por todas las webs
+│  ├─ theme/                   diseño: cabecera, pie, estilos, anuncios, páginas legales
+│  └─ calc-core/               fórmulas de las calculadoras, con tests
+├─ .githooks/pre-commit        bloquea .env, claves y secretos antes de cada commit
+├─ .github/workflows/ci.yml    escaneo de secretos + tests + build en cada PR
+├─ .gitleaks.toml              reglas del detector de secretos
+└─ pnpm-workspace.yaml         dice a pnpm que sites/* y packages/* son proyectos del repo
 ```
 
-Los próximos sitios (`sites/reformas`, `sites/solar`) se crean copiando `sites/autonomos`,
-cambiando `src/site.config.ts`, los contenidos de `src/pages` y el `name` del `package.json`.
-La plantilla, las páginas legales y la seguridad se heredan de `packages/theme`.
+Regla de oro: **todo lo que es de una sola web vive dentro de su carpeta en `sites/`**
+(páginas, textos, imágenes, configuración, `.env`). Lo que comparten varias webs vive en
+`packages/`. Cada carpeta tiene su propio `README.md` con lo que contiene.
+
+Para crear la siguiente web: copia `sites/01-autonomos` a `sites/02-reformas`, cambia el `name`
+de su `package.json`, su `src/site.config.ts` y sus contenidos en `src/pages`. La plantilla, las
+páginas legales y la seguridad se heredan de `packages/theme`.
 
 ## Empezar en local
 
@@ -27,7 +33,7 @@ Requisitos: Node 22 y pnpm (`corepack enable`), Git y [gitleaks](https://github.
 
 ```bash
 pnpm install                         # activa también el githook (.githooks/pre-commit)
-cp sites/autonomos/.env.example sites/autonomos/.env   # y rellénalo
+cp sites/01-autonomos/.env.example sites/01-autonomos/.env   # y rellénalo
 pnpm dev:autonomos                   # http://localhost:4321
 pnpm test                            # tests de calc-core
 pnpm build                           # genera sites/*/dist
@@ -36,14 +42,14 @@ pnpm build                           # genera sites/*/dist
 ## Variables de entorno
 
 Viven en `sites/<sitio>/.env` en local (ignorado por Git) y en el panel de Cloudflare Pages en
-producción. Nunca en el código. Ver `sites/autonomos/.env.example`.
+producción. Nunca en el código. Ver `sites/01-autonomos/.env.example`.
 
 | Variable | Production | Preview | Para qué |
 | --- | --- | --- | --- |
 | `PUBLIC_SITE_URL` | `https://dominio.com` | vacía | canonical, sitemap, robots |
 | `PUBLIC_ADSENSE_CLIENT` | `ca-pub-…` (igual en todos los sitios) | vacía | script de AdSense y `ads.txt` |
 | `PUBLIC_ADS_ENABLED` | `true` | `false` | sin anuncios en previews ni en local |
-| `PUBLIC_AD_SLOT_CALC`, `PUBLIC_AD_SLOT_ARTICLE` | IDs de bloque | vacías | bloques manuales (opcionales) |
+| `PUBLIC_AD_SLOT_CALC`, `PUBLIC_AD_SLOT_ARTICLE`, `PUBLIC_AD_SLOT_SIDEBAR` | IDs de bloque | vacías | bloques manuales (opcionales) |
 | `PUBLIC_OWNER_NAME`, `PUBLIC_OWNER_NIF`, `PUBLIC_OWNER_ADDRESS`, `PUBLIC_CONTACT_EMAIL` | tus datos | tus datos | Aviso legal y Privacidad (LSSI) |
 | `NODE_VERSION` | `22` | `22` | versión de Node en el build |
 
@@ -80,13 +86,13 @@ Extensiones recomendadas de VS Code en `.vscode/extensions.json` (Astro, GitLens
 
 - Production branch: `main`
 - Build command: `pnpm --filter autonomos build`
-- Build output directory: `sites/autonomos/dist`
-- Build watch paths (Include): `sites/autonomos/*`, `packages/*`
+- Build output directory: `sites/01-autonomos/dist`
+- Build watch paths (Include): `sites/01-autonomos/*`, `packages/*`
 - Variables: las de la tabla de arriba, separadas por entorno (Production / Preview).
 
 Después: dominio propio, *Always Use HTTPS*, redirigir `www` al dominio raíz y comprobar las
 cabeceras en [securityheaders.com](https://securityheaders.com). Las cabeceras están en
-`sites/autonomos/public/_headers`; la CSP empieza en `Report-Only` y se pasa a
+`sites/01-autonomos/public/_headers`; la CSP empieza en `Report-Only` y se pasa a
 `Content-Security-Policy` tras 1-2 semanas con anuncios sin errores en la consola.
 
 ## AdSense

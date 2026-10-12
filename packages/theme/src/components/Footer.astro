@@ -1,17 +1,29 @@
 ---
 import { SITE } from '@site-config';
 const year = new Date().getFullYear();
+const [first, ...rest] = SITE.name.split(' ');
 ---
 <footer class="site-footer">
-  <div class="container wide">
-    <nav aria-label="Legal">
-      <ul>
-        {SITE.footerLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-      </ul>
-    </nav>
-    <p>
-      © {year} {SITE.name}. Los resultados de las calculadoras son orientativos y no sustituyen el
-      asesoramiento de un profesional.
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">{SITE.mark}</span>
+          <span>{first} {rest.join(' ')}</span>
+        </a>
+        <p>{SITE.tagline}. Gratis, sin registro y con fuentes oficiales.</p>
+      </div>
+      <nav aria-label="Herramientas">
+        <h2>Herramientas</h2>
+        <ul>{SITE.tools.map((t) => <li><a href={t.href}>{t.label}</a></li>)}</ul>
+      </nav>
+      <nav aria-label="Información">
+        <h2>Información</h2>
+        <ul>{SITE.footerLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
+    </div>
+    <p class="footer-note">
+      © {year} {SITE.name}. Los resultados son orientativos y no sustituyen el asesoramiento de un profesional.
     </p>
   </div>
 </footer>
