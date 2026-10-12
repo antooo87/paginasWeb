@@ -1,0 +1,79 @@
+---
+import Guide from '@paginasweb/theme/layouts/Guide.astro';
+---
+<Guide
+  title="Gastos deducibles del autónomo: qué puedes deducir y cómo"
+  description="Lista de gastos deducibles para autónomos en IRPF e IVA: requisitos, suministros en casa, dietas, seguro médico, vehículo y errores frecuentes."
+  updated="2026-10-12"
+  sources={[
+    { href: 'https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764', label: 'Ley 35/2006 del IRPF, art. 30 (BOE)' },
+    { href: 'https://sede.agenciatributaria.gob.es/', label: 'Agencia Tributaria' },
+  ]}
+  related={[
+    { href: '/calculadoras/modelo-130/', label: 'Calcula tu modelo 130' },
+    { href: '/calculadoras/cuota-autonomos/', label: 'Calcula tu cuota de autónomos' },
+  ]}
+>
+  <p slot="intro">
+    Un gasto deducible reduce tu beneficio y, por tanto, lo que pagas de IRPF (y a menudo de IVA).
+    Hacienda lo acepta cuando cumple tres condiciones a la vez.
+  </p>
+
+  <h2>Los tres requisitos</h2>
+  <ol>
+    <li><strong>Vinculado a la actividad:</strong> necesario para obtener tus ingresos.</li>
+    <li><strong>Justificado:</strong> con factura completa a tu nombre y NIF (el ticket no basta para deducir IVA).</li>
+    <li><strong>Registrado:</strong> anotado en tu libro de gastos.</li>
+  </ol>
+
+  <h2>Gastos que normalmente puedes deducir</h2>
+  <ul>
+    <li>Cuota de autónomos.</li>
+    <li>Alquiler del local u oficina y sus suministros.</li>
+    <li>Material, mercancías, software y suscripciones de trabajo.</li>
+    <li>Gestoría, abogados y otros servicios profesionales.</li>
+    <li>Publicidad, dominio, hosting y web.</li>
+    <li>Seguros de la actividad (responsabilidad civil, local).</li>
+    <li>Formación relacionada con tu actividad.</li>
+    <li>Comisiones bancarias de la cuenta que usas para el negocio.</li>
+    <li>Amortización de equipos (ordenador, mobiliario) según las tablas oficiales.</li>
+  </ul>
+
+  <h2>Casos con límites</h2>
+  <h3>Suministros si trabajas desde casa</h3>
+  <p>
+    Si has comunicado a Hacienda que afectas parte de tu vivienda, puedes deducir el 30 % de la
+    proporción de los suministros (luz, agua, gas, internet) que corresponde a esos metros. Ejemplo:
+    si el despacho ocupa el 20 % de la casa, deduces el 30 % de ese 20 %, es decir, el 6 % de cada
+    factura.
+  </p>
+
+  <h3>Dietas</h3>
+  <p>
+    Comidas en restaurantes durante la jornada, pagadas por medios electrónicos y en un municipio
+    distinto al de tu residencia o lugar de trabajo, con los límites diarios de las dietas exentas:
+    26,67 € al día en España (48,08 € en el extranjero), o 53,34 € (91,35 € en el extranjero) si
+    pernoctas.
+  </p>
+
+  <h3>Seguro de salud</h3>
+  <p>
+    Hasta 500 € al año por ti, tu cónyuge y cada hijo menor de 25 años que conviva contigo (1.500 € en
+    caso de discapacidad).
+  </p>
+
+  <h3>Vehículo</h3>
+  <p>
+    En IRPF solo es deducible si se usa exclusivamente para la actividad, lo que Hacienda casi solo
+    acepta en vehículos de transporte, comerciales o de autoescuela. En IVA se presume una afectación
+    del 50 %, que deberás poder demostrar si te la discuten.
+  </p>
+
+  <h2>Errores frecuentes</h2>
+  <ul>
+    <li>Deducir con tickets simplificados en lugar de facturas completas.</li>
+    <li>Deducir gastos personales o familiares, aunque los pagues desde la cuenta del negocio.</li>
+    <li>Olvidar anotar los gastos en el trimestre en que se producen.</li>
+    <li>No guardar los justificantes: Hacienda puede pedirlos durante al menos cuatro años.</li>
+  </ul>
+</Guide>

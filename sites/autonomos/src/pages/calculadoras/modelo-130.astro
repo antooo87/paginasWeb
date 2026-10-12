@@ -1,0 +1,73 @@
+---
+import Calculator from '@paginasweb/theme/layouts/Calculator.astro';
+import { PORCENTAJE_130 } from '@paginasweb/calc-core';
+---
+<Calculator
+  title="Calculadora del modelo 130: pago fraccionado de IRPF"
+  description={`Calcula el pago trimestral del modelo 130 en estimación directa: el ${PORCENTAJE_130} % del rendimiento neto acumulado menos retenciones y pagos anteriores.`}
+  updated="2026-10-12"
+  sources={[
+    { href: 'https://sede.agenciatributaria.gob.es/Sede/procedimientoini/G601.shtml', label: 'AEAT, modelo 130' },
+    { href: 'https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820', label: 'Reglamento del IRPF, art. 110 (BOE)' },
+  ]}
+  faq={[
+    { q: '¿Estoy obligado a presentar el modelo 130?', a: 'Sí, si estás en estimación directa, salvo que en el año anterior al menos el 70 % de tus ingresos profesionales hayan llevado retención.' },
+    { q: '¿Las cifras son del trimestre o acumuladas?', a: 'Acumuladas desde el 1 de enero hasta el final del trimestre que declaras. Por eso se restan los pagos de trimestres anteriores.' },
+    { q: '¿Qué pasa si sale negativo?', a: 'Se presenta con resultado cero (o negativo, que podrás compensar en los siguientes trimestres del mismo año). El modelo 130 no da devoluciones; eso se regulariza en la renta.' },
+  ]}
+>
+  <form class="calc" slot="tool" id="calc-130" novalidate>
+    <fieldset>
+      <label>Ingresos acumulados del año (sin IVA)
+        <input type="number" name="ingresos" inputmode="decimal" min="0" step="10" value="15000" />
+      </label>
+      <label>Gastos deducibles acumulados
+        <span class="hint">Incluye tu cuota de autónomos</span>
+        <input type="number" name="gastos" inputmode="decimal" min="0" step="10" value="4000" />
+      </label>
+      <label>Retenciones que te han practicado (acumuladas)
+        <input type="number" name="retenciones" inputmode="decimal" min="0" step="10" value="0" />
+      </label>
+      <label>Pagos del 130 de trimestres anteriores este año
+        <input type="number" name="pagos" inputmode="decimal" min="0" step="10" value="0" />
+      </label>
+    </fieldset>
+    <div class="result" aria-live="polite">
+      <p>A ingresar este trimestre</p>
+      <p class="big" data-out="total">–</p>
+      <table><tbody data-out="detalle"></tbody></table>
+    </div>
+  </form>
+
+  <h2>Cómo se calcula el modelo 130</h2>
+  <ol>
+    <li>Rendimiento neto acumulado = ingresos − gastos del 1 de enero al cierre del trimestre.</li>
+    <li>Se aplica el {PORCENTAJE_130} %.</li>
+    <li>Se restan las retenciones soportadas y los pagos de trimestres anteriores.</li>
+  </ol>
+  <p class="notice">
+    Esta calculadora no aplica la deducción del artículo 110.3.c del Reglamento para rendimientos
+    anuales bajos ni la deducción por préstamo de vivienda. Si te afectan, el resultado real será menor.
+  </p>
+  <p>Plazos: del 1 al 20 de abril, julio y octubre, y del 1 al 30 de enero. Consulta el <a href="/guias/calendario-fiscal-autonomos/">calendario fiscal completo</a>.</p>
+</Calculator>
+
+<script>
+  import { PORCENTAJE_130, modelo130 } from '@paginasweb/calc-core';
+  import { bind, money, num, rows } from '@paginasweb/theme/format';
+  const form = document.getElementById('calc-130') as HTMLFormElement;
+  const out = (k: string) => form.querySelector(`[data-out="${k}"]`) as HTMLElement;
+  bind(form, () => {
+    const retenciones = num(form, 'retenciones');
+    const pagosAnteriores = num(form, 'pagos');
+    const r = modelo130({ ingresos: num(form, 'ingresos'), gastos: num(form, 'gastos'), retenciones, pagosAnteriores });
+    out('total').textContent = money(r.aIngresar);
+    rows(out('detalle'), [
+      ['Rendimiento neto acumulado', money(r.rendimiento)],
+      [`${PORCENTAJE_130} % del rendimiento`, money(r.cuotaBruta)],
+      ['Menos retenciones', '−' + money(retenciones)],
+      ['Menos pagos anteriores', '−' + money(pagosAnteriores)],
+      ['Resultado', r.resultado < 0 ? `${money(r.resultado)} (a compensar)` : money(r.resultado)],
+    ]);
+  });
+</script>

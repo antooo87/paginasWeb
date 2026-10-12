@@ -1,0 +1,48 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { SITE } from '@site-config';
+const o = SITE.owner;
+---
+<Legal title="Política de privacidad" description={`Cómo trata ${SITE.name} los datos personales, incluidos los de Google AdSense.`}>
+  <h2>Responsable del tratamiento</h2>
+  <p>{o.name}, NIF {o.nif}, con domicilio en {o.address}. Contacto: <a href={`mailto:${o.email}`}>{o.email}</a>.</p>
+
+  <h2>Qué datos tratamos</h2>
+  <ul>
+    <li><strong>Datos de las calculadoras:</strong> ninguno. Los cálculos se hacen en tu navegador y no se envían a ningún servidor.</li>
+    <li><strong>Correos que nos envías:</strong> tu dirección y lo que nos cuentes, para responderte. Base legal: tu consentimiento al escribirnos. Los conservamos mientras dure la conversación y, después, el tiempo necesario para atender posibles responsabilidades.</li>
+    <li><strong>Datos de navegación y publicidad:</strong> los que recogen Google y sus socios mediante cookies o identificadores, según se explica abajo. Base legal: tu consentimiento, que puedes retirar en cualquier momento.</li>
+  </ul>
+
+  <h2>Publicidad de Google AdSense</h2>
+  <p>
+    Este sitio muestra anuncios de Google AdSense. Google y sus socios, como proveedores externos,
+    utilizan cookies para mostrar anuncios basados en tus visitas anteriores a este y otros sitios web.
+    La cookie de publicidad de Google (DoubleClick) permite a Google y a sus socios mostrarte anuncios
+    según tu navegación.
+  </p>
+  <ul>
+    <li>Puedes desactivar la publicidad personalizada en la <a href="https://adssettings.google.com" rel="noopener" target="_blank">configuración de anuncios de Google</a>.</li>
+    <li>Más información sobre cómo usa Google los datos: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">cómo utiliza Google la información de los sitios que usan sus servicios</a>.</li>
+    <li>También puedes desactivar las cookies de otros proveedores en <a href="https://www.youronlinechoices.com/es/" rel="noopener" target="_blank">youronlinechoices.com</a>.</li>
+  </ul>
+  <p>
+    Al entrar por primera vez te mostramos un aviso de consentimiento (plataforma de gestión del
+    consentimiento certificada por Google). Puedes cambiar tu elección en cualquier momento desde el
+    enlace de privacidad que aparece en ese aviso.
+  </p>
+
+  <h2>Transferencias internacionales</h2>
+  <p>
+    Google puede tratar datos fuera del Espacio Económico Europeo. Google LLC está adherida al Marco de
+    Privacidad de Datos UE-EE. UU., que garantiza un nivel de protección adecuado.
+  </p>
+
+  <h2>Tus derechos</h2>
+  <p>
+    Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y
+    portabilidad escribiendo a <a href={`mailto:${o.email}`}>{o.email}</a>. Si consideras que no
+    hemos atendido bien tu solicitud, puedes reclamar ante la <a href="https://www.aepd.es" rel="noopener" target="_blank">Agencia Española de Protección de Datos</a>.
+  </p>
+  <p>Consulta también nuestra <a href="/cookies/">política de cookies</a>.</p>
+</Legal>

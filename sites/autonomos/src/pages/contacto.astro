@@ -1,0 +1,9 @@
+---
+import Legal from '@paginasweb/theme/layouts/Legal.astro';
+import { SITE } from '../site.config';
+---
+<Legal title="Contacto" description={`Cómo contactar con ${SITE.name} para dudas, errores o sugerencias.`}>
+  <p>¿Has encontrado un error, echas en falta una calculadora o quieres proponer una colaboración?</p>
+  <p>Escríbenos a <a href={`mailto:${SITE.owner.email}`}>{SITE.owner.email}</a>. Respondemos en unos días laborables.</p>
+  <p class="notice">No podemos resolver consultas sobre casos fiscales particulares: para eso, acude a una asesoría o a la Agencia Tributaria.</p>
+</Legal>

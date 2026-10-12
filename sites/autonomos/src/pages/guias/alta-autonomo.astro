@@ -1,0 +1,72 @@
+---
+import Guide from '@paginasweb/theme/layouts/Guide.astro';
+import { TARIFA_PLANA } from '@paginasweb/calc-core';
+---
+<Guide
+  title="Cómo darse de alta como autónomo paso a paso"
+  description="Los trámites para empezar como autónomo en España: alta en Hacienda, alta en la Seguridad Social, tarifa plana y obligaciones desde el primer día."
+  updated="2026-10-12"
+  sources={[
+    { href: 'https://sede.agenciatributaria.gob.es/Sede/procedimientoini/G322.shtml', label: 'AEAT, modelo 036' },
+    { href: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/tramites/altaAutonomos', label: 'Import@ss, alta de autónomos' },
+  ]}
+  related={[
+    { href: '/calculadoras/cuota-autonomos/', label: 'Calcula tu cuota de autónomos' },
+    { href: '/guias/calendario-fiscal-autonomos/', label: 'Calendario fiscal del autónomo' },
+  ]}
+>
+  <p slot="intro">
+    Hacerse autónomo son dos altas: en Hacienda, para facturar y declarar impuestos, y en la
+    Seguridad Social, para cotizar. Las dos se hacen por internet con certificado digital, Cl@ve o
+    DNI electrónico, y no tienen coste.
+  </p>
+
+  <h2>1. Antes de empezar</h2>
+  <ul>
+    <li><strong>Identificación electrónica:</strong> certificado digital de la FNMT o Cl@ve permanente.</li>
+    <li><strong>Epígrafe del IAE:</strong> el código de tu actividad. La sección 1.ª es para actividades empresariales y la 2.ª para profesionales; de ella depende, entre otras cosas, si tus facturas llevan retención.</li>
+    <li><strong>Previsión de ingresos:</strong> la necesitarás para elegir tu tramo de cotización. Puedes estimarla con la <a href="/calculadoras/cuota-autonomos/">calculadora de cuota</a>.</li>
+    <li><strong>Cuenta bancaria</strong> para domiciliar la cuota y los impuestos.</li>
+  </ul>
+
+  <h2>2. Alta en Hacienda (declaración censal)</h2>
+  <p>
+    Se presenta el <strong>modelo 036</strong> en la sede electrónica de la Agencia Tributaria antes
+    de empezar la actividad. En él indicas tu epígrafe, tu domicilio fiscal y el de la actividad, el
+    régimen de IVA (normalmente el general) y el método de estimación del IRPF (normalmente
+    estimación directa simplificada).
+  </p>
+
+  <h2>3. Alta en la Seguridad Social (RETA)</h2>
+  <p>
+    Se tramita en Import@ss. Puedes hacerla hasta 60 días antes del inicio de la actividad y, como
+    tarde, el mismo día en que empiezas. En el alta eliges:
+  </p>
+  <ul>
+    <li>Tu <strong>previsión de rendimientos</strong>, que fija el tramo y la base de cotización.</li>
+    <li>La <strong>mutua colaboradora</strong> que cubrirá la incapacidad temporal y las contingencias profesionales.</li>
+    <li>La solicitud de la <strong>tarifa plana</strong>, si cumples los requisitos.</li>
+  </ul>
+
+  <h2>4. Tarifa plana</h2>
+  <p>
+    Quien se da de alta por primera vez, o no ha estado de alta en los dos años anteriores (tres si
+    ya disfrutó de esta bonificación), paga una cuota reducida de {TARIFA_PLANA} € al mes durante los
+    primeros 12 meses. Se puede prorrogar otros 12 meses si tus rendimientos netos previstos son
+    inferiores al salario mínimo interprofesional.
+  </p>
+
+  <h2>5. Permisos municipales</h2>
+  <p>
+    Si abres un local, necesitarás la licencia de actividad o declaración responsable del
+    ayuntamiento. Si trabajas desde casa o en las instalaciones del cliente, normalmente no hace falta.
+  </p>
+
+  <h2>6. Tus obligaciones desde el primer día</h2>
+  <ul>
+    <li>Emitir factura por cada venta o servicio (usa la <a href="/calculadoras/factura-retencion/">calculadora de factura</a>).</li>
+    <li>Llevar los libros registro de ingresos, gastos y bienes de inversión.</li>
+    <li>Presentar cada trimestre el IVA (modelo 303) y, si te corresponde, el pago fraccionado del IRPF (modelo 130). Lo tienes todo en el <a href="/guias/calendario-fiscal-autonomos/">calendario fiscal</a>.</li>
+    <li>Pagar la cuota de autónomos, que se carga en cuenta a final de cada mes.</li>
+  </ul>
+</Guide>

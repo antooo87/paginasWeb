@@ -1,0 +1,63 @@
+---
+import Calculator from '@paginasweb/theme/layouts/Calculator.astro';
+import { IVA_TIPOS } from '@paginasweb/calc-core';
+---
+<Calculator
+  title="Calculadora de IVA: añadir o quitar IVA"
+  description="Suma el IVA a una base imponible o desglosa un precio con IVA incluido, con los tipos del 21 %, 10 % y 4 %."
+  updated="2026-10-12"
+  sources={[{ href: 'https://www.boe.es/buscar/act.php?id=BOE-A-1992-28740', label: 'Ley 37/1992 del IVA (BOE)' }]}
+  faq={[
+    { q: '¿Cómo se quita el IVA de un precio?', a: 'Divide el precio final entre 1 más el tipo en tanto por uno. Con IVA del 21 %: base = precio / 1,21.' },
+    { q: '¿Qué tipo de IVA aplico en mis facturas?', a: 'La mayoría de servicios profesionales llevan el 21 %. El 10 % y el 4 % se aplican a bienes y servicios concretos que enumera la Ley del IVA (alimentos, transporte de viajeros, libros, etc.).' },
+  ]}
+>
+  <form class="calc" slot="tool" id="calc-iva" novalidate>
+    <fieldset>
+      <label>Importe (€)
+        <input type="number" name="importe" inputmode="decimal" min="0" step="0.01" value="100" />
+      </label>
+      <label>Tipo de IVA
+        <select name="tipo">
+          {IVA_TIPOS.map((t) => <option value={t.valor}>{t.label}</option>)}
+        </select>
+      </label>
+      <label>Operación
+        <select name="modo">
+          <option value="sumar">El importe es sin IVA: añadir IVA</option>
+          <option value="quitar">El importe incluye IVA: desglosarlo</option>
+        </select>
+      </label>
+    </fieldset>
+    <div class="result" aria-live="polite">
+      <p>Total con IVA</p>
+      <p class="big" data-out="total">–</p>
+      <table><tbody data-out="detalle"></tbody></table>
+    </div>
+  </form>
+
+  <h2>Fórmulas</h2>
+  <ul>
+    <li><strong>Añadir IVA:</strong> total = base × (1 + tipo / 100).</li>
+    <li><strong>Quitar IVA:</strong> base = total / (1 + tipo / 100); cuota = total − base.</li>
+  </ul>
+  <p>Si además tu factura lleva retención de IRPF, usa la <a href="/calculadoras/factura-retencion/">calculadora de factura con retención</a>.</p>
+</Calculator>
+
+<script>
+  import { iva } from '@paginasweb/calc-core';
+  import { bind, money, num, rows } from '@paginasweb/theme/format';
+  const form = document.getElementById('calc-iva') as HTMLFormElement;
+  const out = (k: string) => form.querySelector(`[data-out="${k}"]`) as HTMLElement;
+  bind(form, () => {
+    const tipo = num(form, 'tipo');
+    const incluido = (form.elements.namedItem('modo') as HTMLSelectElement).value === 'quitar';
+    const r = iva(num(form, 'importe'), tipo, incluido);
+    out('total').textContent = money(r.total);
+    rows(out('detalle'), [
+      ['Base imponible', money(r.base)],
+      [`IVA (${tipo} %)`, money(r.cuota)],
+      ['Total', money(r.total)],
+    ]);
+  });
+</script>

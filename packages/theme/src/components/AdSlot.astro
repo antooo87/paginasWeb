@@ -1,0 +1,27 @@
+---
+// Bloque de anuncio manual. Solo se pinta si hay un ID de AdSense válido y un slot.
+// Nunca colocar junto a botones de las calculadoras (riesgo de clics accidentales).
+import { SITE } from '@site-config';
+interface Props { slot?: string; format?: string }
+const { slot, format = 'auto' } = Astro.props;
+const show = SITE.adsEnabled && !!slot;
+---
+{show && (
+  <aside class="ad-slot" aria-label="Publicidad">
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client={SITE.adsenseClient}
+      data-ad-slot={slot}
+      data-ad-format={format}
+      data-full-width-responsive="true"
+    ></ins>
+  </aside>
+)}
+<script>
+  // Sin script inline: así la CSP no necesita 'unsafe-inline' para los bloques manuales.
+  const w = window as unknown as { adsbygoogle: unknown[] };
+  document.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status])').forEach(() => {
+    (w.adsbygoogle = w.adsbygoogle || []).push({});
+  });
+</script>

@@ -1,0 +1,74 @@
+---
+import Guide from '@paginasweb/theme/layouts/Guide.astro';
+---
+<Guide
+  title="Calendario fiscal del autónomo: modelos y plazos"
+  description="Qué impuestos presenta un autónomo cada trimestre y cada año, con los plazos de los modelos 303, 130, 111, 115, 390, 190, 347 y la renta."
+  updated="2026-10-12"
+  sources={[{ href: 'https://sede.agenciatributaria.gob.es/Sede/calendario-contribuyente.html', label: 'Calendario del contribuyente (AEAT)' }]}
+  related={[
+    { href: '/calculadoras/modelo-130/', label: 'Calcula tu modelo 130' },
+    { href: '/calculadoras/iva/', label: 'Calculadora de IVA' },
+  ]}
+>
+  <p slot="intro">
+    Un autónomo en estimación directa y régimen general de IVA presenta impuestos cuatro veces al
+    año, más varios resúmenes anuales. Cuando el último día cae en festivo o fin de semana, el plazo
+    pasa al siguiente día hábil. Comprueba siempre las fechas exactas del año en el calendario de la
+    Agencia Tributaria.
+  </p>
+
+  <h2>Declaraciones trimestrales</h2>
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Trimestre</th><th>Plazo</th></tr></thead>
+      <tbody>
+        <tr><td>1.º (enero a marzo)</td><td>1 al 20 de abril</td></tr>
+        <tr><td>2.º (abril a junio)</td><td>1 al 20 de julio</td></tr>
+        <tr><td>3.º (julio a septiembre)</td><td>1 al 20 de octubre</td></tr>
+        <tr><td>4.º (octubre a diciembre)</td><td>1 al 30 de enero</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Si domicilias el pago, el plazo termina unos días antes (consulta el calendario oficial).</p>
+
+  <h3>Modelo 303: IVA</h3>
+  <p>
+    Declaras el IVA que has cobrado en tus facturas menos el IVA que has pagado en tus gastos. Si sale
+    a pagar, lo ingresas; si sale a devolver, se compensa en trimestres siguientes o se pide la
+    devolución en el último.
+  </p>
+
+  <h3>Modelo 130: pago fraccionado del IRPF</h3>
+  <p>
+    Adelantas el 20 % de tu beneficio acumulado del año. No es obligatorio si el año anterior al menos
+    el 70 % de tus ingresos llevaron retención. Calcúlalo con la <a href="/calculadoras/modelo-130/">calculadora del modelo 130</a>.
+  </p>
+
+  <h3>Modelo 111: retenciones</h3>
+  <p>Solo si pagas nóminas o facturas de profesionales con retención: ingresas lo que les has retenido.</p>
+
+  <h3>Modelo 115: alquiler del local</h3>
+  <p>Si alquilas un local para tu actividad, ingresas la retención del alquiler (en general, el 19 %).</p>
+
+  <h2>Declaraciones anuales</h2>
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Modelo</th><th>Qué es</th><th>Plazo</th></tr></thead>
+      <tbody>
+        <tr><td>390</td><td>Resumen anual de IVA</td><td>1 al 30 de enero</td></tr>
+        <tr><td>190</td><td>Resumen anual de retenciones (si presentas el 111)</td><td>1 al 31 de enero</td></tr>
+        <tr><td>180</td><td>Resumen anual del alquiler (si presentas el 115)</td><td>1 al 31 de enero</td></tr>
+        <tr><td>347</td><td>Operaciones con un mismo cliente o proveedor de más de 3.005,06 € al año</td><td>Febrero</td></tr>
+        <tr><td>100</td><td>Declaración de la renta</td><td>Abril a finales de junio</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Consejos para no llegar tarde</h2>
+  <ul>
+    <li>Aparta cada mes el IVA cobrado y un porcentaje del beneficio para el IRPF.</li>
+    <li>Ten los libros al día: el trimestre se cierra en una tarde si registras cada factura al emitirla.</li>
+    <li>Presentar fuera de plazo sin requerimiento tiene recargo; con requerimiento, sanción.</li>
+  </ul>
+</Guide>

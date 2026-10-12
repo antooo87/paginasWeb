@@ -1,0 +1,26 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { SITE } from '@site-config';
+---
+<Legal title="Términos de uso" description={`Condiciones de uso de ${SITE.name} y de sus calculadoras.`}>
+  <h2>Aceptación</h2>
+  <p>Al usar este sitio aceptas estos términos. Si no estás de acuerdo, no lo utilices.</p>
+  <h2>Uso de las calculadoras</h2>
+  <p>
+    Las calculadoras ofrecen estimaciones basadas en la normativa publicada y en los datos que tú
+    introduces. <strong>Los resultados son orientativos y no constituyen asesoramiento {SITE.adviceTopic}.</strong> Pueden no reflejar cambios normativos recientes, casos especiales o
+    circunstancias personales.
+  </p>
+  <h2>Limitación de responsabilidad</h2>
+  <p>
+    El titular no se hace responsable de los daños derivados del uso de la información o de los
+    resultados del sitio. Antes de tomar una decisión, confirma los datos con la fuente oficial o con
+    un profesional.
+  </p>
+  <h2>Uso correcto</h2>
+  <p>No está permitido usar el sitio para fines ilícitos, intentar acceder a sistemas no públicos, ni automatizar peticiones masivas.</p>
+  <h2>Cambios</h2>
+  <p>Podemos modificar estos términos. La versión vigente es la publicada en esta página.</p>
+  <h2>Ley aplicable</h2>
+  <p>Estos términos se rigen por la legislación española. Consulta también el <a href="/aviso-legal/">aviso legal</a>.</p>
+</Legal>

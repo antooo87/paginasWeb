@@ -1,0 +1,67 @@
+---
+import Base from './Base.astro';
+import Updated from '../components/Updated.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { SITE } from '@site-config';
+
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+  sources?: { href: string; label: string }[];
+  faq?: { q: string; a: string }[];
+  category?: string;
+}
+const { title, description, updated, sources, faq = [], category = 'UtilitiesApplication' } = Astro.props;
+
+const jsonLd: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: title,
+    description,
+    url: new URL(Astro.url.pathname, SITE.url).href,
+    applicationCategory: category,
+    operatingSystem: 'Any',
+    inLanguage: 'es',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  },
+];
+if (faq.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  });
+}
+---
+<Base
+  title={title}
+  description={description}
+  breadcrumbs={[{ href: '/calculadoras/', label: 'Calculadoras' }, { href: Astro.url.pathname, label: title }]}
+  jsonLd={jsonLd}
+>
+  <article>
+    <h1>{title}</h1>
+    <p class="lead">{description}</p>
+    <slot name="tool" />
+    <p class="notice">
+      Resultado orientativo. No constituye asesoramiento {SITE.adviceTopic}; confirma tu caso con la
+      fuente oficial o con un profesional.
+    </p>
+    <AdSlot slot={SITE.adSlots.calc} />
+    <slot />
+    {faq.length > 0 && (
+      <section>
+        <h2>Preguntas frecuentes</h2>
+        {faq.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </section>
+    )}
+    <Updated date={updated} sources={sources} />
+  </article>
+</Base>
