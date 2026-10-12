@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import { SITE } from '@site-config';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  breadcrumbs?: { href: string; label: string }[];
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+  ads?: boolean;
+}
+
+const { title, description, breadcrumbs, noindex = false, jsonLd = [], ads = true } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const fullTitle = Astro.url.pathname === '/' ? `${SITE.name}: ${SITE.tagline}` : `${title} | ${SITE.name}`;
+const loadAds = SITE.adsEnabled && ads;
+
+const schema = [...jsonLd];
+if (breadcrumbs?.length) {
+  schema.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [{ href: '/', label: 'Inicio' }, ...breadcrumbs].map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.label,
+      item: new URL(b.href, SITE.url).href,
+    })),
+  });
+}
+---
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {(noindex || SITE.noindex) && <meta name="robots" content="noindex, follow" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content={SITE.themeColor} />
+    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    {loadAds && (
+      <script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`}
+        crossorigin="anonymous"
+      ></script>
+    )}
+  </head>
+  <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <Header />
+    <main id="contenido">
+      <div class="container">
+        {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

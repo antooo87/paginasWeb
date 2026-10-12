@@ -147,3 +147,33 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# --- Seguridad: secretos y credenciales ---
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+credentials*.json
+service-account*.json
+secrets/
+.dev.vars
+
+# --- Binarios e instaladores (no son código) ---
+*.exe
+*.msi
+*.dmg
+*.zip
+
+# --- Editor y sistema ---
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Hosting ---
+.vercel
+.netlify
+.wrangler

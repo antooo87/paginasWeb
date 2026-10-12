@@ -1,0 +1,111 @@
+---
+import Calculator from '@paginasweb/theme/layouts/Calculator.astro';
+import { RETA_TRAMOS, RETA_YEAR, TARIFA_PLANA } from '@paginasweb/calc-core';
+const eur = (n: number) => n.toLocaleString('es-ES', { maximumFractionDigits: 2 });
+let prev = 0;
+const tabla = RETA_TRAMOS.map((t, i) => {
+  const row = { n: i + 1, desde: prev, hasta: t.hasta, cuota: t.cuota, tabla: t.tabla };
+  prev = t.hasta;
+  return row;
+});
+---
+<Calculator
+  title="Calculadora de cuota de autónomos por ingresos"
+  description={`Calcula qué tramo te corresponde y cuánto pagarás de cuota mensual al RETA según tus rendimientos netos (tabla ${RETA_YEAR}).`}
+  updated="2026-10-12"
+  sources={[
+    { href: 'https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/CotizacionRecaudacionTrabajadores/10721/10957/583', label: 'Seguridad Social' },
+    { href: 'https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482', label: 'RDL 13/2022 (BOE)' },
+  ]}
+  faq={[
+    { q: '¿Qué ingresos cuentan para calcular el tramo?', a: 'Los rendimientos netos de la actividad: ingresos menos gastos deducibles, a los que se resta un 7 % en concepto de gastos genéricos (3 % si eres autónomo societario o administrador).' },
+    { q: '¿Qué pasa si me equivoco de tramo?', a: 'Puedes cambiar la base hasta seis veces al año. Al cerrar el ejercicio, la Seguridad Social regulariza con los datos de Hacienda y te devuelve o reclama la diferencia.' },
+    { q: '¿Cuánto dura la tarifa plana?', a: `${TARIFA_PLANA} € al mes durante los primeros 12 meses de alta, ampliables otros 12 si tus rendimientos netos previstos no superan el salario mínimo interprofesional.` },
+  ]}
+>
+  <form class="calc" slot="tool" id="calc-cuota" novalidate>
+    <fieldset>
+      <label>Ingresos anuales previstos (sin IVA)
+        <input type="number" name="ingresos" inputmode="decimal" min="0" step="100" value="30000" />
+      </label>
+      <label>Gastos deducibles anuales
+        <span class="hint">Alquiler, suministros afectos, material, gestoría… (sin incluir la propia cuota)</span>
+        <input type="number" name="gastos" inputmode="decimal" min="0" step="100" value="6000" />
+      </label>
+      <label>Tipo de autónomo
+        <select name="tipo">
+          <option value="0.07">Persona física (7 %)</option>
+          <option value="0.03">Societario o administrador (3 %)</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" name="plana" /> Estoy en mis primeros 12 meses de alta (tarifa plana)</label>
+    </fieldset>
+    <div class="result" aria-live="polite">
+      <p>Cuota mensual estimada</p>
+      <p class="big" data-out="cuota">–</p>
+      <table><tbody data-out="detalle"></tbody></table>
+    </div>
+  </form>
+
+  <h2>Cómo se calcula</h2>
+  <ol>
+    <li>Rendimiento neto anual = ingresos − gastos deducibles.</li>
+    <li>Se resta un 7 % por gastos genéricos (3 % en societarios).</li>
+    <li>El resultado se divide entre 12 para obtener el rendimiento mensual.</li>
+    <li>Ese rendimiento mensual determina el tramo y la cuota de la tabla.</li>
+  </ol>
+  <p>
+    Ejemplo: con 30.000 € de ingresos y 6.000 € de gastos, el rendimiento neto es 24.000 €. Tras
+    restar el 7 % quedan 22.320 €, es decir, 1.860 € al mes, que caen en el tramo de 1.850 a
+    2.030 € con una cuota de 370 € al mes.
+  </p>
+
+  <h2>Tabla de tramos {RETA_YEAR}</h2>
+  <p>
+    Tabla publicada para {RETA_YEAR}. Si la Seguridad Social ha publicado una tabla posterior,
+    prevalece esa.
+  </p>
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Tramo</th><th class="num">Rendimiento mensual</th><th class="num">Cuota/mes</th><th>Tabla</th></tr></thead>
+      <tbody>
+        {tabla.map((t) => (
+          <tr>
+            <td>{t.n}</td>
+            <td class="num">{t.hasta === Infinity ? `más de ${eur(t.desde)} €` : `${eur(t.desde)} – ${eur(t.hasta)} €`}</td>
+            <td class="num">{t.cuota} €</td>
+            <td>{t.tabla}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <p>Siguiente paso: calcula tu <a href="/calculadoras/modelo-130/">pago fraccionado del modelo 130</a> o revisa los <a href="/guias/gastos-deducibles-autonomos/">gastos que puedes deducir</a>.</p>
+</Calculator>
+
+<script>
+  import { cuotaAutonomos } from '@paginasweb/calc-core';
+  import { bind, checked, money, num, rows } from '@paginasweb/theme/format';
+
+  const form = document.getElementById('calc-cuota') as HTMLFormElement;
+  const out = (k: string) => form.querySelector(`[data-out="${k}"]`) as HTMLElement;
+
+  bind(form, () => {
+    const r = cuotaAutonomos({
+      ingresos: num(form, 'ingresos'),
+      gastos: num(form, 'gastos'),
+      societario: num(form, 'tipo') === 0.03,
+      tarifaPlana: checked(form, 'plana'),
+    });
+    out('cuota').textContent = `${money(r.cuota)} / mes`;
+    rows(out('detalle'), [
+      ['Rendimiento neto anual', money(r.rendimientoNeto)],
+      ['Rendimiento computable (tras gastos genéricos)', money(r.rendimientoComputable)],
+      ['Rendimiento mensual', money(r.rendimientoMensual)],
+      ['Tramo', `${r.tramo} (tabla ${r.tabla})`],
+      ['Cuota según tramo', money(r.cuotaTramo)],
+      ['Coste anual', money(r.costeAnual)],
+    ]);
+  });
+</script>

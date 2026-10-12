@@ -1,0 +1,27 @@
+---
+import Legal from '@paginasweb/theme/layouts/Legal.astro';
+import { SITE } from '../site.config';
+---
+<Legal title="Sobre nosotros" description={`Quién está detrás de ${SITE.name}, cómo elaboramos las calculadoras y de dónde salen los datos.`}>
+  <p>
+    {SITE.name} es un proyecto de {SITE.owner.name} para que cualquier autónomo en España pueda
+    resolver en un minuto las cuentas que más dudas generan: cuánto pagará de cuota, cuánto IVA debe
+    ingresar o cuánto cobrar en una factura con retención.
+  </p>
+  <h2>Cómo trabajamos</h2>
+  <ul>
+    <li>Cada cifra sale de una fuente oficial (BOE, Agencia Tributaria, Seguridad Social), que enlazamos en la propia página.</li>
+    <li>Cada página muestra la fecha de su última revisión. Revisamos los importes cada enero y cuando se publica un cambio normativo.</li>
+    <li>Las calculadoras funcionan en tu navegador: no guardamos ni enviamos los datos que introduces.</li>
+  </ul>
+  <h2>Limitaciones</h2>
+  <p>
+    Los resultados son orientativos y no sustituyen el asesoramiento de un profesional. Si detectas un
+    error, escríbenos desde la página de <a href="/contacto/">contacto</a> y lo corregimos.
+  </p>
+  <h2>Cómo se financia este sitio</h2>
+  <p>
+    El sitio es gratuito y se financia con publicidad de Google AdSense. Los anuncios no influyen en el
+    contenido ni en los resultados de las calculadoras.
+  </p>
+</Legal>

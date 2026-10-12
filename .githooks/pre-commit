@@ -1,0 +1,23 @@
+#!/bin/sh
+# Bloquea el commit si hay secretos en lo que vas a subir.
+# Se activa solo con `npm install` (script "prepare": git config core.hooksPath .githooks).
+
+# 1. Archivos que nunca deben entrar, aunque alguien fuerce `git add -f`.
+blocked=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '(^|/)\.env($|\.)|\.(pem|key|p12|pfx|exe|msi|dmg)$|(^|/)id_rsa|credentials.*\.json$|service-account.*\.json$' | grep -v '\.env\.example$')
+if [ -n "$blocked" ]; then
+  echo "Commit bloqueado: estos archivos no deben subirse:"
+  echo "$blocked"
+  echo "Sácalos con: git restore --staged <archivo>"
+  exit 1
+fi
+
+# 2. Escaneo de secretos con gitleaks (https://github.com/gitleaks/gitleaks).
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --staged --redact --no-banner || {
+    echo "Commit bloqueado: gitleaks ha detectado un posible secreto."
+    exit 1
+  }
+else
+  echo "Aviso: gitleaks no está instalado; solo se ha hecho la comprobación básica."
+  echo "Instálalo: winget install gitleaks  |  brew install gitleaks  |  scoop install gitleaks"
+fi

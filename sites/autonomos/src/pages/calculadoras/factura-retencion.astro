@@ -1,0 +1,82 @@
+---
+import Calculator from '@paginasweb/theme/layouts/Calculator.astro';
+import { IVA_TIPOS, RETENCION_GENERAL, RETENCION_INICIO } from '@paginasweb/calc-core';
+---
+<Calculator
+  title="Calculadora de factura de autónomo con IVA y retención de IRPF"
+  description={`Calcula el total a cobrar de una factura con IVA y retención del ${RETENCION_GENERAL} % (o ${RETENCION_INICIO} % si estás en tus primeros años), o la base a partir del neto que quieres cobrar.`}
+  updated="2026-10-12"
+  sources={[
+    { href: 'https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764', label: 'Ley 35/2006 del IRPF (BOE)' },
+    { href: 'https://sede.agenciatributaria.gob.es/', label: 'Agencia Tributaria' },
+  ]}
+  faq={[
+    { q: '¿Cuándo tengo que aplicar retención en mis facturas?', a: 'Cuando realizas una actividad profesional (epígrafes de la sección 2.ª del IAE) y facturas a una empresa u otro autónomo. A particulares no se les aplica retención.' },
+    { q: '¿Quién puede aplicar el 7 %?', a: 'Los profesionales que inician actividad, durante el año de inicio y los dos siguientes, siempre que no hayan ejercido una actividad profesional en el año anterior. Debes comunicarlo por escrito a tu cliente.' },
+  ]}
+>
+  <form class="calc" slot="tool" id="calc-factura" novalidate>
+    <fieldset>
+      <label>Importe (€)
+        <input type="number" name="importe" inputmode="decimal" min="0" step="0.01" value="1000" />
+      </label>
+      <label>El importe es…
+        <select name="modo">
+          <option value="base">La base imponible (antes de impuestos)</option>
+          <option value="neto">Lo que quiero cobrar en mano</option>
+        </select>
+      </label>
+      <label>IVA
+        <select name="iva">
+          {IVA_TIPOS.map((t) => <option value={t.valor}>{t.label}</option>)}
+          <option value="0">Exento o sin IVA (0 %)</option>
+        </select>
+      </label>
+      <label>Retención de IRPF
+        <select name="ret">
+          <option value={RETENCION_GENERAL}>{RETENCION_GENERAL} % (general)</option>
+          <option value={RETENCION_INICIO}>{RETENCION_INICIO} % (inicio de actividad)</option>
+          <option value="0">Sin retención (cliente particular o actividad empresarial)</option>
+        </select>
+      </label>
+    </fieldset>
+    <div class="result" aria-live="polite">
+      <p>Total de la factura</p>
+      <p class="big" data-out="total">–</p>
+      <table><tbody data-out="detalle"></tbody></table>
+    </div>
+  </form>
+
+  <h2>Cómo se calcula una factura con retención</h2>
+  <p>Total a cobrar = base + IVA − retención. El IVA se calcula y se retiene sobre la misma base imponible:</p>
+  <ul>
+    <li>Base: 1.000 €</li>
+    <li>IVA 21 %: +210 €</li>
+    <li>Retención 15 %: −150 €</li>
+    <li>Total factura: 1.060 €</li>
+  </ul>
+  <p>
+    El IVA lo ingresas tú en el <a href="/guias/calendario-fiscal-autonomos/">modelo 303</a>; la
+    retención la ingresa tu cliente a Hacienda y te la descuentas en el <a href="/calculadoras/modelo-130/">modelo 130</a> y en la renta.
+  </p>
+</Calculator>
+
+<script>
+  import { factura } from '@paginasweb/calc-core';
+  import { bind, money, num, rows } from '@paginasweb/theme/format';
+  const form = document.getElementById('calc-factura') as HTMLFormElement;
+  const out = (k: string) => form.querySelector(`[data-out="${k}"]`) as HTMLElement;
+  bind(form, () => {
+    const tipoIva = num(form, 'iva');
+    const tipoRet = num(form, 'ret');
+    const desdeTotal = (form.elements.namedItem('modo') as HTMLSelectElement).value === 'neto';
+    const r = factura(num(form, 'importe'), tipoIva, tipoRet, desdeTotal);
+    out('total').textContent = money(r.total);
+    rows(out('detalle'), [
+      ['Base imponible', money(r.base)],
+      [`IVA (${tipoIva} %)`, '+' + money(r.iva)],
+      [`Retención IRPF (${tipoRet} %)`, '−' + money(r.retencion)],
+      ['Total a cobrar', money(r.total)],
+    ]);
+  });
+</script>

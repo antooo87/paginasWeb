@@ -1,0 +1,13 @@
+# Reglas por defecto de gitleaks más una para tokens de Cloudflare.
+[extend]
+useDefault = true
+
+[[rules]]
+id = "cloudflare-api-token"
+description = "Token de API de Cloudflare"
+regex = '''(?i)(cloudflare|cf)[_-]?(api)?[_-]?token\s*[:=]\s*['"]?[A-Za-z0-9_-]{40}'''
+keywords = ["cloudflare", "cf_api", "cf-api", "cf_token"]
+
+[allowlist]
+description = "Plantillas sin valores reales"
+paths = ['''\.env\.example$''']

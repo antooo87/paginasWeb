@@ -1,0 +1,17 @@
+{
+  "name": "autonomos",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@paginasweb/calc-core": "workspace:*",
+    "@paginasweb/theme": "workspace:*",
+    "astro": "^7.3.8"
+  }
+}

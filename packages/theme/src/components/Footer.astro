@@ -1,0 +1,17 @@
+---
+import { SITE } from '@site-config';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container wide">
+    <nav aria-label="Legal">
+      <ul>
+        {SITE.footerLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <p>
+      © {year} {SITE.name}. Los resultados de las calculadoras son orientativos y no sustituyen el
+      asesoramiento de un profesional.
+    </p>
+  </div>
+</footer>

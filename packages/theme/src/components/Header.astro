@@ -1,0 +1,17 @@
+---
+import { SITE } from '@site-config';
+const path = Astro.url.pathname;
+const [first, ...rest] = SITE.name.split(' ');
+---
+<header class="site-header">
+  <div class="container wide">
+    <a class="brand" href="/">{first} <span>{rest.join(' ')}</span></a>
+    <nav class="site-nav" aria-label="Principal">
+      <ul>
+        {SITE.nav.map((item) => (
+          <li><a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
