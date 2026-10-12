@@ -43,7 +43,7 @@ producción. Nunca en el código. Ver `sites/autonomos/.env.example`.
 | `PUBLIC_SITE_URL` | `https://dominio.com` | vacía | canonical, sitemap, robots |
 | `PUBLIC_ADSENSE_CLIENT` | `ca-pub-…` (igual en todos los sitios) | vacía | script de AdSense y `ads.txt` |
 | `PUBLIC_ADS_ENABLED` | `true` | `false` | sin anuncios en previews ni en local |
-| `PUBLIC_AD_SLOT_CALC`, `PUBLIC_AD_SLOT_ARTICLE` | IDs de bloque | vacías | bloques manuales (opcionales) |
+| `PUBLIC_AD_SLOT_CALC`, `PUBLIC_AD_SLOT_ARTICLE`, `PUBLIC_AD_SLOT_SIDEBAR` | IDs de bloque | vacías | bloques manuales (opcionales) |
 | `PUBLIC_OWNER_NAME`, `PUBLIC_OWNER_NIF`, `PUBLIC_OWNER_ADDRESS`, `PUBLIC_CONTACT_EMAIL` | tus datos | tus datos | Aviso legal y Privacidad (LSSI) |
 | `NODE_VERSION` | `22` | `22` | versión de Node en el build |
 
