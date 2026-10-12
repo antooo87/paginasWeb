@@ -1,14 +1,11 @@
 ---
-import Base from './Base.astro';
+import Page from './Page.astro';
 import { SITE } from '@site-config';
 interface Props { title: string; description: string }
 const { title, description } = Astro.props;
 const human = new Date(SITE.lastLegalUpdate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Base title={title} description={description} breadcrumbs={[{ href: Astro.url.pathname, label: title }]} ads={false}>
-  <article>
-    <h1>{title}</h1>
-    <slot />
-    <p class="meta">Última actualización: {human}</p>
-  </article>
-</Base>
+<Page title={title} description={description} ads={false} icon="scale">
+  <slot />
+  <p class="meta">Última actualización: {human}</p>
+</Page>

@@ -26,11 +26,11 @@ const tabla = RETA_TRAMOS.map((t, i) => {
   <form class="calc" slot="tool" id="calc-cuota" novalidate>
     <fieldset>
       <label>Ingresos anuales previstos (sin IVA)
-        <input type="number" name="ingresos" inputmode="decimal" min="0" step="100" value="30000" />
+        <span class="field" data-unit="€"><input type="number" name="ingresos" inputmode="decimal" min="0" step="100" value="30000" /></span>
       </label>
       <label>Gastos deducibles anuales
         <span class="hint">Alquiler, suministros afectos, material, gestoría… (sin incluir la propia cuota)</span>
-        <input type="number" name="gastos" inputmode="decimal" min="0" step="100" value="6000" />
+        <span class="field" data-unit="€"><input type="number" name="gastos" inputmode="decimal" min="0" step="100" value="6000" /></span>
       </label>
       <label>Tipo de autónomo
         <select name="tipo">
@@ -42,7 +42,7 @@ const tabla = RETA_TRAMOS.map((t, i) => {
     </fieldset>
     <div class="result" aria-live="polite">
       <p>Cuota mensual estimada</p>
-      <p class="big" data-out="cuota">–</p>
+      <p class="big"><span data-out="cuota">–</span><small>/ mes</small></p>
       <table><tbody data-out="detalle"></tbody></table>
     </div>
   </form>
@@ -98,7 +98,7 @@ const tabla = RETA_TRAMOS.map((t, i) => {
       societario: num(form, 'tipo') === 0.03,
       tarifaPlana: checked(form, 'plana'),
     });
-    out('cuota').textContent = `${money(r.cuota)} / mes`;
+    out('cuota').textContent = money(r.cuota);
     rows(out('detalle'), [
       ['Rendimiento neto anual', money(r.rendimientoNeto)],
       ['Rendimiento computable (tras gastos genéricos)', money(r.rendimientoComputable)],

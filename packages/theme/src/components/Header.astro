@@ -4,8 +4,12 @@ const path = Astro.url.pathname;
 const [first, ...rest] = SITE.name.split(' ');
 ---
 <header class="site-header">
-  <div class="container wide">
-    <a class="brand" href="/">{first} <span>{rest.join(' ')}</span></a>
+  <div class="container">
+    <a class="brand" href="/" aria-label={`${SITE.name}, inicio`}>
+      <span class="brand-mark" aria-hidden="true">{SITE.mark}</span>
+      <span>{first} <span>{rest.join(' ')}</span></span>
+    </a>
+    {SITE.cta && <a class="btn btn-primary btn-sm header-cta mobile-only" href={SITE.cta.href}>{SITE.cta.label}</a>}
     <nav class="site-nav" aria-label="Principal">
       <ul>
         {SITE.nav.map((item) => (
@@ -13,5 +17,6 @@ const [first, ...rest] = SITE.name.split(' ');
         ))}
       </ul>
     </nav>
+    {SITE.cta && <a class="btn btn-primary btn-sm desktop-only" href={SITE.cta.href}>{SITE.cta.label}</a>}
   </div>
 </header>

@@ -1,15 +1,26 @@
 ---
-import Base from '@paginasweb/theme/layouts/Base.astro';
+import Page from '@paginasweb/theme/layouts/Page.astro';
+import Icon from '@paginasweb/theme/components/Icon.astro';
 import { CALCULADORAS } from '../../data/content';
 ---
-<Base
+<Page
   title="Calculadoras para autónomos"
   description="Todas las calculadoras fiscales para autónomos: cuota de autónomos, IVA, factura con retención y modelo 130."
+  lead="Herramientas gratuitas, sin registro y sin guardar tus datos: todo se calcula en tu navegador."
+  icon="calculator"
   breadcrumbs={[{ href: '/calculadoras/', label: 'Calculadoras' }]}
+  wide
 >
-  <h1>Calculadoras para autónomos</h1>
-  <p class="lead">Herramientas gratuitas, sin registro y sin guardar tus datos: todo se calcula en tu navegador.</p>
   <ul class="cards">
-    {CALCULADORAS.map((c) => <li><a class="card" href={c.href}><strong>{c.label}</strong><span>{c.desc}</span></a></li>)}
+    {CALCULADORAS.map((c) => (
+      <li>
+        <a class="card" href={c.href}>
+          <span class="icon-badge"><Icon name={c.icon} /></span>
+          <strong>{c.label}</strong>
+          <span>{c.desc}</span>
+          <b class="go">Calcular <Icon name="arrow" size={16} /></b>
+        </a>
+      </li>
+    ))}
   </ul>
-</Base>
+</Page>

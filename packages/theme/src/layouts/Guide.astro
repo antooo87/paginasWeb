@@ -1,17 +1,23 @@
 ---
 import Base from './Base.astro';
+import PageHead from '../components/PageHead.astro';
 import Updated from '../components/Updated.astro';
 import AdSlot from '../components/AdSlot.astro';
+import Aside from '../components/Aside.astro';
+import Icon from '../components/Icon.astro';
 import { SITE } from '@site-config';
+import type { IconName } from '../site.ts';
 
 interface Props {
   title: string;
   description: string;
   updated: string;
+  icon?: IconName;
   sources?: { href: string; label: string }[];
   related?: { href: string; label: string }[];
 }
-const { title, description, updated, sources, related = [] } = Astro.props;
+const { title, description, updated, sources, related = [], icon = 'book' } = Astro.props;
+const crumbs = [{ href: '/guias/', label: 'Guías' }, { href: Astro.url.pathname, label: title }];
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -25,24 +31,26 @@ const jsonLd = [
   },
 ];
 ---
-<Base
-  title={title}
-  description={description}
-  breadcrumbs={[{ href: '/guias/', label: 'Guías' }, { href: Astro.url.pathname, label: title }]}
-  jsonLd={jsonLd}
->
-  <article>
-    <h1>{title}</h1>
-    <p class="lead">{description}</p>
+<Base title={title} description={description} breadcrumbs={crumbs} jsonLd={jsonLd}>
+  <PageHead title={title} lead={description} tag="Guía" icon={icon} breadcrumbs={crumbs}>
     <Updated date={updated} sources={sources} />
-    <slot name="intro" />
-    <AdSlot slot={SITE.adSlots.article} />
-    <slot />
-    {related.length > 0 && (
-      <section>
-        <h2>Te puede servir</h2>
-        <ul>{related.map((r) => <li><a href={r.href}>{r.label}</a></li>)}</ul>
-      </section>
-    )}
-  </article>
+  </PageHead>
+  <div class="container with-aside">
+    <article class="prose">
+      <slot name="intro" />
+      <AdSlot slot={SITE.adSlots.article} />
+      <slot />
+      {related.length > 0 && (
+        <section>
+          <h2>Te puede servir</h2>
+          <ul class="cards compact">
+            {related.map((r) => (
+              <li><a class="card" href={r.href}><span class="icon-badge"><Icon name="arrow" size={20} /></span><strong>{r.label}</strong></a></li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </article>
+    <Aside />
+  </div>
 </Base>

@@ -19,17 +19,17 @@ import { PORCENTAJE_130 } from '@paginasweb/calc-core';
   <form class="calc" slot="tool" id="calc-130" novalidate>
     <fieldset>
       <label>Ingresos acumulados del año (sin IVA)
-        <input type="number" name="ingresos" inputmode="decimal" min="0" step="10" value="15000" />
+        <span class="field" data-unit="€"><input type="number" name="ingresos" inputmode="decimal" min="0" step="10" value="15000" /></span>
       </label>
       <label>Gastos deducibles acumulados
         <span class="hint">Incluye tu cuota de autónomos</span>
-        <input type="number" name="gastos" inputmode="decimal" min="0" step="10" value="4000" />
+        <span class="field" data-unit="€"><input type="number" name="gastos" inputmode="decimal" min="0" step="10" value="4000" /></span>
       </label>
       <label>Retenciones que te han practicado (acumuladas)
-        <input type="number" name="retenciones" inputmode="decimal" min="0" step="10" value="0" />
+        <span class="field" data-unit="€"><input type="number" name="retenciones" inputmode="decimal" min="0" step="10" value="0" /></span>
       </label>
       <label>Pagos del 130 de trimestres anteriores este año
-        <input type="number" name="pagos" inputmode="decimal" min="0" step="10" value="0" />
+        <span class="field" data-unit="€"><input type="number" name="pagos" inputmode="decimal" min="0" step="10" value="0" /></span>
       </label>
     </fieldset>
     <div class="result" aria-live="polite">

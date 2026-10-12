@@ -1,18 +1,25 @@
 ---
 import Base from './Base.astro';
+import PageHead from '../components/PageHead.astro';
 import Updated from '../components/Updated.astro';
 import AdSlot from '../components/AdSlot.astro';
+import Aside from '../components/Aside.astro';
+import Icon from '../components/Icon.astro';
 import { SITE } from '@site-config';
+import type { IconName } from '../site.ts';
 
 interface Props {
   title: string;
   description: string;
   updated: string;
+  icon?: IconName;
   sources?: { href: string; label: string }[];
   faq?: { q: string; a: string }[];
   category?: string;
 }
 const { title, description, updated, sources, faq = [], category = 'UtilitiesApplication' } = Astro.props;
+const icon = Astro.props.icon ?? SITE.tools.find((t) => t.href === Astro.url.pathname)?.icon ?? 'calculator';
+const crumbs = [{ href: '/calculadoras/', label: 'Calculadoras' }, { href: Astro.url.pathname, label: title }];
 
 const jsonLd: Record<string, unknown>[] = [
   {
@@ -35,33 +42,36 @@ if (faq.length) {
   });
 }
 ---
-<Base
-  title={title}
-  description={description}
-  breadcrumbs={[{ href: '/calculadoras/', label: 'Calculadoras' }, { href: Astro.url.pathname, label: title }]}
-  jsonLd={jsonLd}
->
-  <article>
-    <h1>{title}</h1>
-    <p class="lead">{description}</p>
-    <slot name="tool" />
-    <p class="notice">
-      Resultado orientativo. No constituye asesoramiento {SITE.adviceTopic}; confirma tu caso con la
-      fuente oficial o con un profesional.
-    </p>
-    <AdSlot slot={SITE.adSlots.calc} />
-    <slot />
-    {faq.length > 0 && (
-      <section>
-        <h2>Preguntas frecuentes</h2>
-        {faq.map((f) => (
-          <details>
-            <summary>{f.q}</summary>
-            <p>{f.a}</p>
-          </details>
-        ))}
-      </section>
-    )}
+<Base title={title} description={description} breadcrumbs={crumbs} jsonLd={jsonLd}>
+  <PageHead title={title} lead={description} tag="Calculadora gratuita" icon={icon} breadcrumbs={crumbs}>
     <Updated date={updated} sources={sources} />
-  </article>
+  </PageHead>
+  <div class="container with-aside">
+    <article>
+      <slot name="tool" />
+      <p class="notice">
+        <Icon name="shield" size={20} />
+        <span>
+          Resultado orientativo. No constituye asesoramiento {SITE.adviceTopic}; confirma tu caso con la
+          fuente oficial o con un profesional.
+        </span>
+      </p>
+      <AdSlot slot={SITE.adSlots.calc} />
+      <div class="prose">
+        <slot />
+      </div>
+      {faq.length > 0 && (
+        <section class="faq">
+          <h2>Preguntas frecuentes</h2>
+          {faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </section>
+      )}
+    </article>
+    <Aside />
+  </div>
 </Base>

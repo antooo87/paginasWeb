@@ -1,15 +1,26 @@
 ---
-import Base from '@paginasweb/theme/layouts/Base.astro';
+import Page from '@paginasweb/theme/layouts/Page.astro';
+import Icon from '@paginasweb/theme/components/Icon.astro';
 import { GUIAS } from '../../data/content';
 ---
-<Base
+<Page
   title="Guías para autónomos"
   description="Guías prácticas para autónomos en España: alta, calendario fiscal, gastos deducibles y más."
+  lead="Explicaciones paso a paso, en lenguaje llano y con enlaces a la normativa oficial."
+  icon="book"
   breadcrumbs={[{ href: '/guias/', label: 'Guías' }]}
+  wide
 >
-  <h1>Guías para autónomos</h1>
-  <p class="lead">Explicaciones paso a paso con enlaces a la normativa oficial.</p>
   <ul class="cards">
-    {GUIAS.map((g) => <li><a class="card" href={g.href}><strong>{g.label}</strong><span>{g.desc}</span></a></li>)}
+    {GUIAS.map((g) => (
+      <li>
+        <a class="card" href={g.href}>
+          <span class="icon-badge"><Icon name={g.icon} /></span>
+          <strong>{g.label}</strong>
+          <span>{g.desc}</span>
+          <b class="go">Leer la guía <Icon name="arrow" size={16} /></b>
+        </a>
+      </li>
+    ))}
   </ul>
-</Base>
+</Page>

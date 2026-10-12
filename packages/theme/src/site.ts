@@ -4,14 +4,26 @@
 
 export interface Link { href: string; label: string }
 
+export type IconName =
+  | 'calculator' | 'receipt' | 'percent' | 'calendar' | 'wallet' | 'book' | 'clipboard'
+  | 'coins' | 'shield' | 'clock' | 'lock' | 'arrow' | 'check' | 'scale' | 'mail';
+
+export interface Tool extends Link { icon: IconName; desc: string }
+
 export interface SiteInput {
   name: string;
   tagline: string;
   description: string;
   nav: Link[];
+  /** Herramientas destacadas: barra lateral, pie y tarjetas. */
+  tools: Tool[];
+  /** Botón destacado de la cabecera. */
+  cta?: Link;
   /** Temática para los avisos legales: «fiscal y laboral», «técnico»… */
   adviceTopic: string;
   themeColor?: string;
+  /** Carácter del logotipo (por defecto, la inicial del nombre). */
+  mark?: string;
   lastLegalUpdate: string;
 }
 
@@ -22,7 +34,7 @@ export interface SiteConfig extends SiteInput {
   owner: { name: string; nif: string; address: string; email: string };
   adsenseClient: string;
   adsEnabled: boolean;
-  adSlots: { calc?: string; article?: string };
+  adSlots: { calc?: string; article?: string; sidebar?: string };
   noindex: boolean;
   footerLinks: Link[];
 }
@@ -38,6 +50,7 @@ export function defineSite(input: SiteInput): SiteConfig {
     themeColor: '#0b6e4f',
     ...input,
     name: env.PUBLIC_SITE_NAME || input.name,
+    mark: input.mark || (env.PUBLIC_SITE_NAME || input.name).charAt(0),
     url: env.PUBLIC_SITE_URL || 'https://example.com',
     lang: 'es',
     locale: 'es_ES',
@@ -50,7 +63,11 @@ export function defineSite(input: SiteInput): SiteConfig {
     // El ID ca-pub no es secreto (va en el HTML y en ads.txt), pero no se escribe en el código.
     adsenseClient,
     adsEnabled: env.PUBLIC_ADS_ENABLED === 'true' && /^ca-pub-\d{16}$/.test(adsenseClient),
-    adSlots: { calc: env.PUBLIC_AD_SLOT_CALC || undefined, article: env.PUBLIC_AD_SLOT_ARTICLE || undefined },
+    adSlots: {
+      calc: env.PUBLIC_AD_SLOT_CALC || undefined,
+      article: env.PUBLIC_AD_SLOT_ARTICLE || undefined,
+      sidebar: env.PUBLIC_AD_SLOT_SIDEBAR || undefined,
+    },
     noindex: !!branch && branch !== 'main',
     footerLinks: [
       { href: '/sobre-nosotros/', label: 'Sobre nosotros' },
